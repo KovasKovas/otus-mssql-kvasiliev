@@ -42,8 +42,9 @@ InvoiceMonth | Peeples Valley, AZ | Medicine Lodge, KS | Gasport, NY | Sylvanite
 
 WITH TailspinToysSales AS
 (
+
 	SELECT
-		FORMAT(InvoiceDate,'dd.MM.yyyy') AS InvoiceMonth
+		FORMAT(DATEADD(dd, -(DAY(InvoiceDate)-1), InvoiceDate),'dd.MM.yyyy') AS InvoiceMonth
 		,CUST.CustomerName
 		,SUM(STRN.TransactionAmount) AS TotalSales
 	FROM
@@ -55,7 +56,7 @@ WITH TailspinToysSales AS
 	WHERE
 		SINV.CustomerID BETWEEN 2 AND 6
 	GROUP BY
-		FORMAT(InvoiceDate,'dd.MM.yyyy') 
+		FORMAT(DATEADD(dd, -(DAY(InvoiceDate)-1), InvoiceDate),'dd.MM.yyyy')
 		,CUST.CustomerName
 )
 
@@ -151,6 +152,33 @@ UNPIVOT (
 В результатах должно быть ид клиета, его название, ид товара, цена, дата покупки.
 */
 
+--Переделал
+SELECT
+	CUST.CustomerID 
+	,CUST.CustomerName  
+	,TwoMostExpenciveGoods.StockItemID 
+	,TwoMostExpenciveGoods.UnitPrice  
+	,TwoMostExpenciveGoods.InvoiceDate  
+FROM
+	Sales.Customers CUST
+	OUTER APPLY 
+	(
+		SELECT TOP 2
+		SILN.StockItemID  
+		,SINV.CustomerID
+		,SINV.InvoiceDate 
+		,SILN.UnitPrice	
+	FROM
+		Sales.Invoices SINV
+		INNER JOIN Sales.InvoiceLines SILN
+		ON SINV.InvoiceID = SILN.InvoiceID 
+	WHERE
+		SINV.CustomerID = CUST.CustomerID 
+	ORDER BY
+		SINV.CustomerID, SILN.UnitPrice DESC
+		) TwoMostExpenciveGoods
+
+--Оставил вариант с window func
 SELECT
 	CUST.CustomerID 
 	,CUST.CustomerName  
@@ -168,7 +196,7 @@ FROM
 					,SINV.CustomerID
 					,SINV.InvoiceDate 
 					,SILN.UnitPrice	
-					,ROW_NUMBER() OVER ( PARTITION BY SINV.CustomerID ORDER BY SILN.UnitPrice DESC) as PriceRank
+					,ROW_NUMBER() OVER (PARTITION BY SINV.CustomerID ORDER BY SILN.UnitPrice DESC) as PriceRank
 				FROM
 					Sales.Invoices SINV
 					INNER JOIN Sales.InvoiceLines SILN
