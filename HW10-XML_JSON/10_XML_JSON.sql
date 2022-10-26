@@ -140,12 +140,12 @@ FOR XML PATH('Item'), ROOT('StockItems')
 - CountryOfManufacture (из CustomFields)
 - FirstTag (из поля CustomFields, первое значение из массива Tags)
 */
-SELECT TOP 10
+
+SELECT
 	StockItemID
 	,StockItemName
 	,JSON_VALUE(CustomFields, '$.CountryOfManufacture') AS CountryOfManufacture
 	,COALESCE(JSON_VALUE(CustomFields, '$.Tags[0]'), 'No first tag value') AS FirstTag
-	,CustomFields
 FROM
 	Warehouse.StockItems
 
