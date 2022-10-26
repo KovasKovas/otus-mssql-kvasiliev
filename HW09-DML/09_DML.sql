@@ -27,52 +27,52 @@ INSERT INTO Sales.Customers (CustomerID, CustomerName, BillToCustomerID, Custome
 							, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo)
 
 VALUES (
-			NEXT VALUE FOR Sequences.CustomerID, 'Test customer 1', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
+			DEFAULT,'Test customer 1', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0101', '(215) 555-0101', '', '' ,'http://somesite_1.com' 
 			,'Customer 1 first delivery address line', 'Customer 1 second delivery address line', '0000000000', 0xE6100000010C5B5CE333D9EA44403A07CF8426F755C0
-			,'Customer 1 first postal address line', 'Customer 1 second postal address line', '0000000000', 1, CONVERT(DATE, GETDATE()), '99991231'
+			,'Customer 1 first postal address line', 'Customer 1 second postal address line', '0000000000', 1, DEFAULT, DEFAULT
 		),
 		(
-			NEXT VALUE FOR Sequences.CustomerID, 'Test customer 2', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
+			DEFAULT,'Test customer 2', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0202', '(215) 555-0202', '', '' ,'http://somesite_2.com' 
 			,'Customer 2 first delivery address line', 'Customer 2 second delivery address line', '0000000000', 0xE6100000010C5B5CE333D9EA44403A07CF8426F755C0
-			,'Customer 2 first postal address line', 'Customer 2 second postal address line', '0000000000', 1, CONVERT(DATE, GETDATE()), '99991231'
+			,'Customer 2 first postal address line', 'Customer 2 second postal address line', '0000000000', 1, DEFAULT, DEFAULT
 		),
 		(
-			NEXT VALUE FOR Sequences.CustomerID, 'Test customer 3', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
+			DEFAULT,'Test customer 3', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0303', '(215) 555-0303', '', '' ,'http://somesite_3.com' 
 			,'Customer 3 first delivery address line', 'Customer 3 second delivery address line', '0000000000', 0xE6100000010C5B5CE333D9EA44403A07CF8426F755C0
-			,'Customer 3 first postal address line', 'Customer 3 second postal address line', '0000000000', 1, CONVERT(DATE, GETDATE()), '99991231'
+			,'Customer 3 first postal address line', 'Customer 3 second postal address line', '0000000000', 1, DEFAULT, DEFAULT
 		),
 
 		(
-			NEXT VALUE FOR Sequences.CustomerID, 'Test customer 4', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
+			DEFAULT,'Test customer 4', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0404', '(215) 555-0404', '', '' ,'http://somesite_4.com' 
 			,'Customer 4 first delivery address line', 'Customer 4 second delivery address line', '0000000000', 0xE6100000010C5B5CE333D9EA44403A07CF8426F755C0
-			,'Customer 4 first postal address line', 'Customer 4 second postal address line', '0000000000', 1, CONVERT(DATE, GETDATE()), '99991231'
+			,'Customer 4 first postal address line', 'Customer 4 second postal address line', '0000000000', 1, DEFAULT, DEFAULT
 		),
 		(
-			NEXT VALUE FOR Sequences.CustomerID, 'Test customer 5', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
+			DEFAULT,'Test customer 5', NEXT VALUE FOR Sequences.CustomerID, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0505', '(215) 555-0505', '', '' ,'http://somesite_5.com' 
 			,'Customer 5 first delivery address line', 'Customer 5 second delivery address line', '0000000000', 0xE6100000010C5B5CE333D9EA44403A07CF8426F755C0
-			,'Customer 5 first postal address line', 'Customer 5 second postal address line', '0000000000', 1, CONVERT(DATE, GETDATE()), '99991231'
+			,'Customer 5 first postal address line', 'Customer 5 second postal address line', '0000000000', 1, DEFAULT, DEFAULT
 		);
 /*
 2. Удалите одну запись из Customers, которая была вами добавлена
 */
 
 DELETE FROM Sales.Customers 
-WHERE CustomerName = 'Test customer 5';
+WHERE CustomerName = 'Test customer 1';
 
 /*
 3. Изменить одну запись, из добавленных через UPDATE
@@ -90,7 +90,7 @@ MERGE Sales.Customers AS TARGET
 	USING (
 
 			VALUES(
-			1046, 'Test customer 6', 1046, 3 ,NULL
+			'Test customer 6', 1046, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0606', '(215) 555-0606', '', '' ,'http://somesite_6.com' 
@@ -99,7 +99,7 @@ MERGE Sales.Customers AS TARGET
 			)
 		) 
 	AS SOURCE (
-				CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, BuyingGroupID
+				CustomerName, BillToCustomerID, CustomerCategoryID, BuyingGroupID
 				, PrimaryContactPersonID, AlternateContactPersonID, DeliveryMethodID, DeliveryCityID
 				, PostalCityID, CreditLimit, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent
 				, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, DeliveryRun, RunPosition, WebsiteURL
@@ -107,7 +107,7 @@ MERGE Sales.Customers AS TARGET
 				, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo
 	) 
 	
-	ON (TARGET.CustomerID = SOURCE.CustomerID) 
+	ON (TARGET.CustomerName = SOURCE.CustomerName) 
 	
 	WHEN MATCHED 
 		
@@ -138,13 +138,11 @@ MERGE Sales.Customers AS TARGET
 						PostalAddressLine1 = SOURCE.PostalAddressLine1, 
 						PostalAddressLine2 = SOURCE.PostalAddressLine2, 
 						PostalPostalCode = SOURCE.PostalPostalCode, 
-						LastEditedBy = SOURCE.LastEditedBy, 
-						ValidFrom = SOURCE.ValidFrom, 
-						ValidTo = SOURCE.ValidTo
-	
+						LastEditedBy = SOURCE.LastEditedBy
+
 	WHEN NOT MATCHED THEN 
 	
-		INSERT (CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, BuyingGroupID
+		INSERT ( CustomerID, CustomerName, BillToCustomerID, CustomerCategoryID, BuyingGroupID
 				, PrimaryContactPersonID, AlternateContactPersonID, DeliveryMethodID, DeliveryCityID
 				, PostalCityID, CreditLimit, AccountOpenedDate, StandardDiscountPercentage, IsStatementSent
 				, IsOnCreditHold, PaymentDays, PhoneNumber, FaxNumber, DeliveryRun, RunPosition, WebsiteURL
@@ -152,15 +150,13 @@ MERGE Sales.Customers AS TARGET
 				, PostalAddressLine1, PostalAddressLine2, PostalPostalCode, LastEditedBy, ValidFrom, ValidTo)
 
 		VALUES(
-			1046, 'Test customer 6', 1046, 3 ,NULL
+			 DEFAULT, 'Test customer 6', 1046, 3 ,NULL
 			,3121, NULL, 3, 18110
 			,18110, 9999, CONVERT(DATE, GETDATE()), 10, 0
 			,0, 7, '(215) 555-0606', '(215) 555-0606', '', '' ,'http://somesite_6.com' 
 			,'Customer 6 first delivery address line', 'Customer 6 second delivery address line', '0000000000', 0xE6100000010C5B5CE333D9EA44403A07CF8426F755C0
-			,'Customer 6 first postal address line', 'Customer 6 second postal address line', '0000000000', 1, CONVERT(DATE, GETDATE()), '99991231'
-			)
-	
-	;
+			,'Customer 6 first postal address line', 'Customer 6 second postal address line', '0000000000', 1, DEFAULT, DEFAULT
+			);
 
 /*
 5. Напишите запрос, который выгрузит данные через bcp out и загрузить через bulk insert
